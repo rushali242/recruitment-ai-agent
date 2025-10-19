@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center py-10">
+  <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8">
+    <h2 class="text-3xl font-bold text-blue-700 text-center mb-6">Matching Results</h2>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
+        <thead class="bg-blue-100 text-gray-700">
+          <tr>
+            <th class="px-4 py-2 text-left">Candidate</th>
+            <th class="px-4 py-2 text-left">Score</th>
+            <th class="px-4 py-2 text-left">Missing Skills</th>
+            <th class="px-4 py-2 text-left">Remarks</th>
+            <th class="px-4 py-2 text-left">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in results %}
+          <tr class="border-b hover:bg-gray-50 transition">
+            <td class="px-4 py-2 font-medium text-gray-800">{{ r.name }}</td>
+            <td class="px-4 py-2 text-gray-700">{{ r.score }}</td>
+            <td class="px-4 py-2 text-gray-600">{{ r.missing }}</td>
+            <td class="px-4 py-2 text-gray-600">{{ r.remark }}</td>
+            <td class="px-4 py-2 text-gray-600"><pre class="whitespace-pre-wrap">{{ r.email }}</pre></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center mt-6">
+      <a href="/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">← Back</a>
+    </div>
+  </div>
+</body>
+</html>
