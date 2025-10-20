@@ -9,7 +9,7 @@ import os
 nltk.download("wordnet", quiet=True)
 nltk.download("omw-1.4", quiet=True)
 
-generator = pipeline("text2text-generation", model="google/flan-t5-large")
+generator = pipeline("text2text-generation", model="google/flan-t5-small")
 
 def preprocess_text(text):
     # Lowercase text
@@ -48,8 +48,8 @@ def generate_jd(data):
     )
     output = generator(
         prompt,
-        max_length=500,
-        min_length=150,
+        max_length=300,
+        min_length=85,
         do_sample=True,
         top_p=0.9,
         temperature=0.8,
