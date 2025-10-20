@@ -2,26 +2,16 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import pipeline
 import re
-import nltk
-from nltk.stem import WordNetLemmatizer
-import os
 
-nltk.download("wordnet", quiet=True)
-nltk.download("omw-1.4", quiet=True)
-
-generator = pipeline("text2text-generation", model="google/flan-t5-small")
 
 def preprocess_text(text):
     # Lowercase text
     text = text.lower()
     # Keep alphabets, digits, and spaces (remove everything else)
     text = re.sub(r"[^a-z0-9\s]", " ", text)
-    # Lemmatize words
-    lemmatizer = WordNetLemmatizer()
-    tokens = [lemmatizer.lemmatize(word) for word in text.split() if len(word) > 2]
-    # Join tokens back into a single string
-
-    return " ".join(tokens)
+    # keep words > 3 chars
+    text = " ".join([word for word in text.split() if len(word) > 3])
+    return text
 
 def calculate_score(jd_text,resume_text):
     jd_text = preprocess_text(jd_text)
@@ -40,6 +30,7 @@ def get_missing_skills(jd_text, resume_text, skills):
     return [s for s in skills if s.lower() not in resume_text.lower()]
 
 def generate_jd(data):
+    generator = pipeline("text2text-generation", model="google/flan-t5-small")
     prompt = (
         f"Write a short job description for a {data['title']} role "
         f"requiring {data['years']} years of experience in {data['skills']}. "
@@ -59,15 +50,15 @@ def generate_jd(data):
     return output[0]["generated_text"]
 
 def generate_email(name, status, missing_skills=None):
-    clean_name = os.path.splitext(name)[0] 
+    generator = pipeline("text2text-generation", model="google/flan-t5-small")
     if status == "selected":
         prompt = (
-        f"Write a short, professional interview invitation email for the candidate {clean_name}. "
+        f"Write a short, professional interview invitation email for the candidate {name}. "
         f"Keep it polite and concise, mentioning the role and asking to confirm availability."
     )
     else:
         prompt = (
-            f"Write a rejection email for the candidate {clean_name}. That they are NOT SELECTED."
+            f"Write a rejection email for the candidate {name}. That they are NOT SELECTED."
             f"Explain that they were not selected after careful consideration because they lack some of the key skills."
             f"Encourage them to apply for future opportunities that may better match their profile. "
             f"Limit the response to 3–5 concise sentences, avoiding repetition or placeholders."
