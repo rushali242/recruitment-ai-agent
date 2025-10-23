@@ -25,7 +25,7 @@ Recruitment AI Agent is a web application that automates the process of analyzin
   - **<50:** Weak match
 
 ### Email & JD Generation
-- Uses **Google FLAN-T5-small** (`text2text-generation` pipeline) to generate:
+- Uses **Google FLAN-T5-large** (`text2text-generation` pipeline) to generate:
   - Short job descriptions from input fields.
   - Polite interview invitation emails.
   - Concise rejection emails.
